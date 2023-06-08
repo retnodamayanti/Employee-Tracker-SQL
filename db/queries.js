@@ -11,7 +11,7 @@ function DatabaseQueries(promptCallback) {
   };
 
   this.viewAllRoles = function () {
-    database.query('SELECT roles.id, roles.title, departments.department_name AS department, roles.salary FROM roles JOIN departments ON roles.department_id = departments.id ORDER BY departments.department_name DESC', function (err, results) {
+    database.query('SELECT roles.id, roles.title, departments.department_name AS department, roles.salary FROM roles JOIN departments ON roles.department_id = departments.id ORDER BY roles.id', function (err, results) {
       if (err) throw err;
       console.table(results);
       promptCallback();
