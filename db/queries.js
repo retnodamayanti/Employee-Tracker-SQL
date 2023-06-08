@@ -35,6 +35,25 @@ function DatabaseQueries(promptCallback) {
     });
   };
 
+  this.addRole = function (title, salary, departmentId) {
+    const query = 'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)';
+    database.query(query, [title, salary, departmentId], function (err, results) {
+      if (err) throw err;
+      console.log(`${title} has been added to the database!`);
+      promptCallback();
+    });
+  };
+
+  this.addEmployee = function (firstName, lastName, roleId, managerId) {
+    const query = 'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
+    database.query(query, [firstName, lastName, roleId, managerId], function (err, results) {
+      if (err) throw err;
+      console.log('New employee has been added to the database!');
+      promptCallback();
+    });
+  };
+  
+  
   // Implement other functions like addRole, addEmployee, updateEmployeeRole, etc.
 }
 
