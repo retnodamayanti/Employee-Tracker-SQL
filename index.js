@@ -64,18 +64,22 @@ function promptUser() {
 
 const queries = new DatabaseQueries(promptUser);
 
+// viewAllDepartments function
 function viewAllDepartments() {
   queries.viewAllDepartments();
 }
 
+// viewAllRoles function
 function viewAllRoles() {
   queries.viewAllRoles();
 }
 
+// viewAllEmployees function
 function viewAllEmployees() {
   queries.viewAllEmployees();
 }
 
+// addDepartment function
 function addDepartment() {
     inquirer
       .prompt([
@@ -91,6 +95,7 @@ function addDepartment() {
       });
   }
 
+// addRole function
 function addRole() {
     const departmentChoices = [];
   const query = 'SELECT id, department_name FROM departments';
@@ -129,7 +134,7 @@ function addRole() {
   });
 }
 
-// Prompt user for employee details and call addEmployee function
+// addEmployee function
 function addEmployee() {
     // Fetch the role choices from the database
     const roleChoices = [];
@@ -190,6 +195,57 @@ function addEmployee() {
       });
     });
   }
+
+// updateEmployeeRole function
+function updateEmployeeRole() {
+    // Fetch the employee choices from the database
+    const employeeChoices = [];
+    const employeeQuery = 'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employees';
+    database.query(employeeQuery, function (err, employeeResults) {
+      if (err) throw err;
+      employeeResults.forEach(function (employee) {
+        employeeChoices.push({
+          value: employee.id,
+          name: employee.name,
+        });
+      });
+  
+      // Fetch the role choices from the database
+      const roleChoices = [];
+      const roleQuery = 'SELECT id, title FROM roles';
+      database.query(roleQuery, function (err, roleResults) {
+        if (err) throw err;
+        roleResults.forEach(function (role) {
+          roleChoices.push({
+            value: role.id,
+            name: role.title,
+          });
+        });
+  
+        // Prompt user to select an employee and new role
+        inquirer
+          .prompt([
+            {
+              type: 'list',
+              name: 'employeeId',
+              message: 'Which employee`s role do you want to update?',
+              choices: employeeChoices,
+            },
+            {
+              type: 'list',
+              name: 'roleId',
+              message: 'Which role do you want to assign the selected employee?',
+              choices: roleChoices,
+            },
+          ])
+          .then(function (answers) {
+            const { employeeId, roleId } = answers;
+            queries.updateEmployeeRole(employeeId, roleId);
+          });
+      });
+    });
+  }
+  
   
   
 

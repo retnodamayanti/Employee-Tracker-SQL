@@ -48,10 +48,20 @@ function DatabaseQueries(promptCallback) {
     const query = 'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
     database.query(query, [firstName, lastName, roleId, managerId], function (err, results) {
       if (err) throw err;
-      console.log('New employee has been added to the database!');
+      console.log(`${firstName} ${lastName} has been added to the database!`);
       promptCallback();
     });
   };
+  
+  this.updateEmployeeRole = function (employeeId, roleId) {
+    const query = 'UPDATE employees SET role_id = ? WHERE id = ?';
+    database.query(query, [roleId, employeeId], function (err, results) {
+      if (err) throw err;
+      console.log('Employee`s role has been updated!');
+      promptCallback();
+    });
+  };
+  
   
   
   // Implement other functions like addRole, addEmployee, updateEmployeeRole, etc.
