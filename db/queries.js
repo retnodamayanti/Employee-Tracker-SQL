@@ -27,10 +27,10 @@ function DatabaseQueries(promptCallback) {
   };
 
   this.addDepartment = function (departmentName) {
-    const query = 'INSERT INTO departments (name) VALUES (?)';
+    const query = 'INSERT INTO departments (department_name) VALUES (?)';
     database.query(query, [departmentName], function (err, results) {
       if (err) throw err;
-      console.table(results);
+      console.log(`${departmentName} has been added to the database!`);
       promptCallback();
     });
   };
